@@ -1,0 +1,70 @@
+package handler
+
+import (
+	"context"
+	"log"
+	"net/http"
+
+	"github.com/bytedance2022/minimal_tiktok/cmd/api/rpc"
+	"github.com/bytedance2022/minimal_tiktok/grpc_gen/auth"
+	"github.com/bytedance2022/minimal_tiktok/grpc_gen/biz"
+	"github.com/gin-gonic/gin"
+)
+
+
+func Login(c *gin.Context) {
+	//var req auth.LoginRequest
+	//err := c.ShouldBindQuery(&req)
+	//log.Printf("reqeust : %+v\n", req)
+	//
+	//if err != nil {
+	//	log.Println(err)
+	//	// todo
+	//}
+	//resp, err := rpc.AuthClient.Login(context.Background(), &req)
+	//if err != nil {
+	//	log.Println(err)
+	//}
+	//c.JSON(http.StatusOK, resp)
+	//log.Println(c.Errors)
+	msg := "success"
+	resp := &auth.LoginResponse{
+		UserId:     1001,
+		Token:      "user1",
+		StatusCode: 0,
+		StatusMsg:  &msg,
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func Register(c *gin.Context) {
+	var req auth.RegisterRequest
+	err := c.ShouldBindQuery(&req)
+
+	log.Printf("reqeust : %+v\n", req)
+
+	if err != nil {
+		// todo
+	}
+	resp, err := rpc.AuthClient.Register(context.Background(), &req)
+	if err != nil {
+		// todo
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func QueryInfo(c *gin.Context) {
+	var req biz.QueryUserInfoRequest
+	err := c.ShouldBindQuery(&req)
+
+	log.Printf("reqeust : %+v\n", req)
+
+	if err != nil {
+		// todo
+	}
+	resp, err := rpc.BizClient.QueryUserInfo(context.Background(), &req)
+	if err != nil {
+		// todo
+	}
+	c.JSON(http.StatusOK, resp)
+}
